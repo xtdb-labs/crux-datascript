@@ -2,9 +2,15 @@
   (:require [datascript.core :as d]
             [crux.api :as c]))
 
+
+;; all entities need a :crux.db/id
+;; no cardinality-one attributes
+;; ref attributes have to be prefixed with `r.`
+;; a delete in Crux does not equate to a retractEntity
+
 ;; transaction-time (tt) is the global `now` for the system, across crux and in datascript, not valid-time (vt)
 ;; designed for vt=tt sync with datascript, so vt is used for datascript's tt (if tracked)
-;; this is currently from one node, but what is need is a feed from all transactions (submitted across all nodes, via hooks on tx-log successes), also combined with the future-time `now` index/polling merged in to support proactive ops (retroactive vt ops would still be out of scope)
+;; this is currently from one node, but what is needed is a feed from all transactions (submitted across all nodes, via hooks on tx-log successes), also combined with the future-time `now` index/polling merged in to support proactive ops (retroactive vt ops would still be out of scope)
 
 (defn ref-keyword? [k]
   (when-let [nspc (namespace k)]
